@@ -1,0 +1,5 @@
+{
+  "vectorizer_kind": "tfidf",
+  "ngram_low": 1,
+  "ngram_high": 2
+}

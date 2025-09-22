@@ -1,0 +1,6 @@
+model/**
+data/**
+.venv/**
+.idea/**
+*.pyc
+logs/**

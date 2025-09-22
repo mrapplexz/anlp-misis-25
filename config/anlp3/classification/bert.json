@@ -1,0 +1,36 @@
+{
+  "data_path": "/home/me/projects/tochka/misis-nlp-25/data/train.csv",
+  "text_model": {
+    "base_model_name": "google-bert/bert-base-multilingual-uncased",
+    "num_classes": 13
+  },
+  "trainer": {
+    "use_stateful_dataloader": true,
+    "num_epochs": 1,
+    "gradient_accumulation_steps": 4,
+    "project_dir": "logs",
+    "log_steps": 10,
+    "eval_steps": 200,
+    "save_steps": 200,
+    "experiment_name": "bert-multilingual-test",
+    "log_with": "aim",
+    "minibatch_size": 8,
+    "shuffle_train_dataset": true,
+    "num_workers": 4,
+    "seed": 42,
+    "precision": {
+      "enable_tf32": true,
+      "low_precision": "no",
+      "enable_amp": false
+    },
+    "optimizer": {
+      "optimizer": "adamw",
+      "weight_decay": 0.01,
+      "learning_rate": 0.00002
+    },
+    "scheduler": {
+      "schedule": "linear_warmup",
+      "warmup_steps_proportion": 0.1
+    }
+  }
+}

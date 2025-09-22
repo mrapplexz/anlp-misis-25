@@ -1,0 +1,7 @@
+{
+  "lowercase": false,
+  "tokenize_method": "split",
+  "remove_non_alphanum": false,
+  "remove_stopwords": false,
+  "normalize_method": null
+}

@@ -1,0 +1,7 @@
+{
+  "lowercase": true,
+  "tokenize_method": "nltk",
+  "remove_non_alphanum": true,
+  "remove_stopwords": true,
+  "normalize_method": "stem"
+}
