@@ -1,0 +1,47 @@
+{
+  "architecture": {
+    "vocab_size": 30000,
+    "segment_vocab_size": 2,
+    "hidden_size": 256,
+    "feedforward_hidden_size": 1024,
+    "max_positions": 515,
+    "attention_heads": 8,
+    "num_layers": 4,
+    "dropout_proba": 0.1
+  },
+  "trainer": {
+    "use_stateful_dataloader": true,
+    "num_epochs": 1,
+    "gradient_accumulation_steps": 8,
+    "project_dir": "logs",
+    "log_steps": 10,
+    "eval_steps": 200,
+    "save_steps": 200,
+    "experiment_name": "bert-pretrain-256hs",
+    "log_with": "aim",
+    "minibatch_size": 8,
+    "shuffle_train_dataset": false,
+    "num_workers": 4,
+    "seed": 42,
+    "precision": {
+      "enable_tf32": true,
+      "low_precision": "no",
+      "enable_amp": false
+    },
+    "optimizer": {
+      "optimizer": "adamw",
+      "weight_decay": 0.01,
+      "learning_rate": 0.0001
+    },
+    "scheduler": {
+      "schedule": "linear_warmup",
+      "warmup_steps_proportion": 0.01
+    }
+  },
+  "tokenizer_path": "data/anlp4/tokenizer.json",
+  "data": {
+    "max_text_length": 512,
+    "min_segment_length": 10,
+    "filtering_num_proc": 16
+  }
+}
