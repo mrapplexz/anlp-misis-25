@@ -27,7 +27,8 @@ dependencies = [
     "torchdata (>=0.11.0,<0.12.0)",
     "aim (==3.29.1)",
     "datasets (>=4.1.1,<5.0.0)",
-    "rotary-embedding-torch (>=0.8.9,<0.9.0)"
+    "rotary-embedding-torch (>=0.8.9,<0.9.0)",
+    "vllm (>=0.11.0,<0.12.0)"
 ]
 
 
