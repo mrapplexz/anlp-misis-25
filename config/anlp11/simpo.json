@@ -1,0 +1,49 @@
+{
+  "base_model": "Qwen/Qwen3-0.6B",
+  "dataset": {
+    "num_proc": 16,
+    "shuffle_seed": 42,
+    "use_samples": 10000
+  },
+  "trainer": {
+    "use_stateful_dataloader": true,
+    "num_epochs": 1,
+    "gradient_accumulation_steps": 32,
+    "project_dir": "logs",
+    "log_steps": 10,
+    "eval_steps": 200,
+    "save_steps": 200,
+    "experiment_name": "simpo-test",
+    "log_with": "aim",
+    "minibatch_size": 1,
+    "shuffle_train_dataset": false,
+    "num_workers": 4,
+    "seed": 42,
+    "precision": {
+      "enable_tf32": true,
+      "low_precision": "no",
+      "enable_amp": false
+    },
+    "optimizer": {
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "learning_rate": 0.00001
+    },
+    "scheduler": {
+      "schedule": "linear_warmup",
+      "warmup_steps_proportion": 0.05
+    }
+  },
+  "lora": {
+    "modules_apply_re": ".*self_attn\\.._proj.*",
+    "modules_full_train": [],
+    "rank": 64,
+    "alpha": 64
+  },
+  "algorithm": {
+    "algorithm": "simpo",
+    "beta": 1.0,
+    "margin": 0.1
+  },
+  "export_path": "data/anlp11/export-model-anthropic-simpo"
+}

@@ -4,3 +4,4 @@ data/**
 .idea/**
 *.pyc
 logs/**
+/misisnlp/anlp8/my_math_problems/

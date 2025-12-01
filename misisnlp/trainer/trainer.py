@@ -140,7 +140,7 @@ class Trainer:
             self,
             epoch_i: int,
             dataloader: DataLoader,
-            dataloader_eval: DataLoader,
+            dataloader_eval: DataLoader | None,
             model: nn.Module,
             optimizer: Optimizer,
             scheduler: LRScheduler,
@@ -187,7 +187,7 @@ class Trainer:
                 scheduler.step()
                 optimizer.zero_grad()
 
-            if accelerator.sync_gradients and \
+            if dataloader_eval is not None and accelerator.sync_gradients and \
                     current_global_optimizer_step != 0 and \
                     current_global_optimizer_step % self._config.eval_steps == 0:
                 self._eval_loop_iter(dataloader_eval, model, accelerator, current_global_optimizer_step)
@@ -244,12 +244,15 @@ class Trainer:
     def _perform_low_casting(self, model: nn.Module) -> nn.Module:
         return _convert_precision(model, self._config.precision)
 
-    def train(self, train_dataset: Dataset, val_dataset: Dataset):
+    def train(self, train_dataset: Dataset, val_dataset: Dataset | None):
         set_seed(self._config.seed)
         self._enable_tf32()
 
         train_dataloader = self._create_dataloader(train_dataset, for_training=True)
-        val_dataloader = self._create_dataloader(val_dataset, for_training=False)
+        if val_dataset is not None:
+            val_dataloader = self._create_dataloader(val_dataset, for_training=False)
+        else:
+            val_dataloader = None
         amp_precision = self._config.precision.low_precision if self._config.precision.enable_amp else None
         accel = Accelerator(
             gradient_accumulation_steps=self._config.gradient_accumulation_steps,
@@ -266,7 +269,11 @@ class Trainer:
                 'lr': self._config.optimizer.learning_rate,
             }
         )
-        train_dataloader, val_dataloader = accel.prepare(train_dataloader, val_dataloader)
+        if val_dataloader is not None:
+            train_dataloader, val_dataloader = accel.prepare(train_dataloader, val_dataloader)
+        else:
+            train_dataloader = accel.prepare(train_dataloader)
+
         num_total_steps = len(train_dataloader) * self._config.num_epochs
         self._model = self._perform_low_casting(self._model)
         optimizer = self._create_optimizer(self._model.parameters())
