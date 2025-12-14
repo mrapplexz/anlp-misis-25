@@ -29,7 +29,7 @@ def compute_logp(model, input_ids: torch.Tensor, attention_mask: torch.Tensor, l
     return logps
 
 
-def build_trainable(config: AnyPOConfig):
+def build_preference_trainable(config: AnyPOConfig):
     match config:
         case DpoConfig():
             return DpoTrainable(config)

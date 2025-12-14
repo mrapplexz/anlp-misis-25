@@ -7,7 +7,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 
 from misisnlp.anlp11.config import LLMTrainingConfig
 from misisnlp.anlp11.data_loading import load_anthropic_hh_rlhf, TorchPreferenceCollator, TorchPreferenceDataset
-from misisnlp.anlp11.trainables import DpoTrainable, build_trainable
+from misisnlp.anlp11.trainables import DpoTrainable, build_preference_trainable
 from misisnlp.trainer.trainer import Trainer
 
 
@@ -38,7 +38,7 @@ def main(config_path: Path):
             modules_to_save=config.lora.modules_full_train
         )
     )
-    trainer = Trainer(config.trainer, model, build_trainable(config.algorithm), TorchPreferenceCollator())
+    trainer = Trainer(config.trainer, model, build_preference_trainable(config.algorithm), TorchPreferenceCollator())
     trainer.train(dataset, None)
     model = model.merge_and_unload()
     model.save_pretrained(str(config.export_path))

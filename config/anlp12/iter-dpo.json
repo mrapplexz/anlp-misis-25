@@ -1,0 +1,56 @@
+{
+  "base_model": "Qwen/Qwen3-0.6B",
+  "dataset": {
+    "num_proc": 16,
+    "shuffle_seed": 42,
+    "use_samples": 50
+  },
+  "answer_sampling": {
+    "num_answers": 4,
+    "temperature": 1.0,
+    "top_p": 0.9,
+    "max_new_tokens": 1024
+  },
+  "reward_model_path": "data/anlp12/export-reward-model",
+  "num_iterations": 2,
+  "trainer": {
+    "use_stateful_dataloader": true,
+    "num_epochs": 1,
+    "gradient_accumulation_steps": 1,
+    "project_dir": "logs",
+    "log_steps": 10,
+    "eval_steps": 200,
+    "save_steps": 200,
+    "experiment_name": "iter-dpo-test",
+    "log_with": "aim",
+    "minibatch_size": 1,
+    "shuffle_train_dataset": false,
+    "num_workers": 4,
+    "seed": 42,
+    "precision": {
+      "enable_tf32": true,
+      "low_precision": "no",
+      "enable_amp": false
+    },
+    "optimizer": {
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "learning_rate": 0.00001
+    },
+    "scheduler": {
+      "schedule": "linear_warmup",
+      "warmup_steps_proportion": 0.05
+    }
+  },
+  "lora": {
+    "modules_apply_re": ".*self_attn\\.._proj.*",
+    "modules_full_train": [],
+    "rank": 64,
+    "alpha": 64
+  },
+    "algorithm": {
+    "algorithm": "dpo",
+    "beta": 1.0
+  },
+  "export_path": "data/anlp12/export-reward-model"
+}
